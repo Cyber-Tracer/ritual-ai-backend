@@ -1,0 +1,62 @@
+version: '3'
+ 
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ritual-api
+    restart: always
+    ports:
+      - "5000:5000"
+        #    networks:
+        #      - web_nw
+        #      - nginx_nw
+    depends_on:
+      - db
+      - frontend
+  db:
+    image: postgres:15.3-alpine
+    container_name: ritual-db
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: django
+      POSTGRES_USER: django
+      POSTGRES_DB: django_db
+
+      #    env_file: .env
+      #    networks:
+      #      #      - web_nw
+  nginx:
+    container_name: ritual-proxy
+    build:
+      context: nginx/
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - static:/app/staticfiles
+        #    networks:
+        #      - nginx_nw
+  frontend:
+    container_name: ritual-frontend
+    build:
+      context: ../ritual-ai-frontend/
+      dockerfile: Dockerfile
+    command: cp -r /app/dist /app/staticfiles
+    volumes:
+      - static:/app/staticfiles
+        #    networks:
+        #      - nginx_nw
+ 
+volumes:
+  postgres:
+  static:
+
+      # networks:
+      #   web_nw:
+      #     external: true
+      #   nginx_nw:
+      #     external: true

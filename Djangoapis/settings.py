@@ -80,8 +80,14 @@ WSGI_APPLICATION = 'Djangoapis.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'django_db',
+        'USER': 'django',
+        'PASSWORD': 'django',
+        'HOST': 'db',
+        'PORT': '5432',
     }
 }
 
@@ -120,7 +126,8 @@ USE_L10N = True
 USE_TZ = True
 
 CORS_ALLOWED_ORIGINS = [
-   "https://130.60.156.180:4200",
+        "https://ritual-api.trusted-ai.net/",
+        "https://ritual.trusted-ai.net/",
 ]
 
 
